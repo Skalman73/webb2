@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Boilerplate to start up website</title>
+    <title>Breakout</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../img/pink.jpg">
 </head>
@@ -25,7 +25,11 @@
     </header>
 
     <main>
-
+        <div class="breakout">
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
+            
+            <button id="reset">Reset score</button>
+        </div>
     </main>
 
     <footer>
@@ -33,5 +37,6 @@
     </footer>
 
 <script type="module" src="/js/main.js"></script>
+<script type="module" src="/js/breakout.js"></script>
 </body>
 </html>

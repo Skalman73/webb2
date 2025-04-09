@@ -1,0 +1,105 @@
+@import url("base.css");
+:root{
+    --main-width: 1100px;
+    --magic-number: 24px;
+    --header-height: 70px;
+    --primary-color: black;
+    --secondary-color: rgb(255, 0, 255);
+    --border-color:white;
+    
+}
+body{
+    background-color: var(--primary-color);
+}
+header{
+    display: flex;
+    height:70px;
+}
+p, a {
+    font-family:monospace;
+}
+.logo{
+    
+    width:80px;
+    height:100%;
+}
+nav{
+    background-color: var(--primary-color);
+    margin-bottom: var(--magic-number);
+    width:100%;
+    height:100%;
+}
+nav ul{
+    list-style-type: none;
+    display:flex;
+    line-height: var(--header-height);
+}
+nav ul li{
+    border: var(--secondary-color) 1px solid;
+    border-right: none;
+    min-width:200px;
+    text-align: center;
+}
+nav ul li:last-child{
+    border-right: var(--secondary-color) 1px solid;
+}
+nav ul li a{
+    color:var(--secondary-color);
+    text-decoration: none;
+    font-size:16px;
+}
+nav ul li a:hover{
+    text-decoration: underline;
+    color:white;
+}
+
+main{
+    display: block;
+    overflow: auto;
+    min-height:800px;
+    margin:10px;
+}
+
+.copyright{
+    height:var(--header-height);
+    width:100%;
+    display: flex;
+    position:absolute;
+    top:100;
+}
+.copyright p{
+    text-align: center;
+    margin:auto;
+    color:var(--secondary-color);
+}
+
+.copyright, main{
+    background-color: var(--primary-color);
+    border: var(--secondary-color) 1px solid;
+}
+
+canvas {
+    display: block;
+    margin: 20px auto;
+    background-color: var(--primary-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.breakout{
+    padding:20px;
+    display: flex;
+    flex-direction: column;
+}
+button{
+    width:10%;
+    align-self: center;
+    font-family: monospace;
+    border: var(--secondary-color) 1px solid;
+    color: var(--secondary-color);
+    background-color: var(--primary-color);
+}
+button:hover{
+    color:white;
+    text-decoration: underline;
+    cursor:pointer;
+}
