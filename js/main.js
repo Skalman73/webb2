@@ -8,23 +8,23 @@ window.addEventListener('load', ()=> {
     yearElement.innerText = year;
 })
 
-// Create array for the nav links
-const navLinks = document.querySelector('nav ul');
+// // Create array for the nav links
+// const navLinks = document.querySelector('nav ul');
 
-// Click on the hamburger button to toggle visibility
-document.querySelector('.hamburger').addEventListener('click', (event) => {
-    console.log('clicked')
+// // Click on the hamburger button to toggle visibility
+// document.querySelector('.hamburger').addEventListener('click', (event) => {
+//     console.log('clicked')
 
-    navLinks.classList.toggle('active');
-    event.stopPropagation()
-});
+//     navLinks.classList.toggle('active');
+//     event.stopPropagation()
+// });
 
-// Click anywhere else to disable visibility
-document.querySelector('html').addEventListener('click', () => {
-    console.log('clicked away')
+// // Click anywhere else to disable visibility
+// document.querySelector('html').addEventListener('click', () => {
+//     console.log('clicked away')
 
-    navLinks.classList.remove('active');
-})
+//     navLinks.classList.remove('active');
+// })
 
 // get the element
 // const themeSwitch = document.querySelector('#themeswitch');
@@ -89,6 +89,8 @@ document.getElementById("reset").addEventListener("click", () => reset());
 function handleUserChoice(userChoice) {
     // Run one round of the game
     game.play(userChoice); 
+
+    console.log("Halllåå???");
   
     // Get the results from the game 
     result.textContent = game.getMessage();

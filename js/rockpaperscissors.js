@@ -83,45 +83,45 @@ export default class Game {
             {
                 computerString = "eraser";
                 var img = document.getElementById("computer_img");
-                img.src="../img/eraser.png";
+                // img.src="../img/eraser.png";
                 break;
             }
             case "scissors":
             {
                 computerString = "pencil";
                 var img = document.getElementById("computer_img");
-                img.src="../img/pencil.png";
+                // img.src="../img/pencil.png";
                 break;
             }
             case "paper":
             {
                 computerString = "paper";
                 var img = document.getElementById("computer_img");
-                img.src="../img/sketchbook.webp";
+                // img.src="../img/sketchbook.webp";
                 break;
             }
             
         }
 
-        switch(userChoice){
-            case "rock":
-            {
-                userString = "eraser"
-                break;
-            }
-            case "scissors":
-            {
-                userString = "pencil"
-                break;
-            }
-            case "paper":
-            {
-                userString = "paper";
-                break;
-            }
-        }
+        // switch(userChoice){
+        //     case "rock":
+        //     {
+        //         userString = "eraser"
+        //         break;
+        //     }
+        //     case "scissors":
+        //     {
+        //         userString = "pencil"
+        //         break;
+        //     }
+        //     case "paper":
+        //     {
+        //         userString = "paper";
+        //         break;
+        //     }
+        // }
 
-        let message = "Monet chose " + computerString + " and you chose " + userString;
+        let message = "The Computer chose " + computerChoice + " and you chose " + userChoice;
         if (result == "win")
             message += ". You won!";
 
@@ -136,7 +136,7 @@ export default class Game {
             message = "";
         }
 
-        message += " Monet's score: " + this.computerScore +  " Your score: ";
+        message += " Computer score: " + this.computerScore +  " Your score: ";
 
         this.currentMessage = message;
         console.log("score:" + this.userScore);

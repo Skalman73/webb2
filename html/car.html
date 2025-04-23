@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Rock Paper Scissors</title>
+    <title>Breakout</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" href="../img/pink.jpg">
 </head>
@@ -25,23 +25,11 @@
     </header>
 
     <main>
-        <div class="game_flash">
-            <div class="game">
-                <div class="button_div">
-                    <button><img src="../img/eraser.png" alt="Rock" id="rock"></img></button> 
-                    <button><img src="../img/sketchbook.webp" alt="Paper" id="paper"></img></button>
-                    <button><img src="../img/pencil.png" alt="Scissors" id="scissors"></img></button>
-                </div>
-    
-            </div>
+        <div class="carGame">
+            <canvas id="gameCanvas" width="600" height="400"></canvas>
             
-            <div>
-                <p id="result">Computer score: 0 Your score: 0 </p> 
-                
-                <button id="reset">Reset game</button>
-            </div>
+            <button id="reset">Reset score</button>
         </div>
-        
     </main>
 
     <footer>
@@ -49,6 +37,6 @@
     </footer>
 
 <script type="module" src="/js/main.js"></script>
-<script type="module" src="/js/rockpaperscissors.js"></script>
+<script type="module" src="/js/car.js"></script>
 </body>
 </html>
