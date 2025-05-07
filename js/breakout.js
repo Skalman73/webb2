@@ -37,7 +37,7 @@ const brickOffsetTop = 30;
 const brickOffsetLeft = 35;
 let bricks = [];
 let score = 0;
-let highScore = localStorage.getItem("highScore") || 0;
+let highScoreBreakout = localStorage.getItem("highScoreBreakout") || 0;
 
 // Initiera brickor
 for (let c = 0; c < brickColumnCount; c++) {
@@ -183,7 +183,7 @@ function drawUI(){
     ctx.fillStyle = secondaryColor;
     ctx.textAlign = "left";
     ctx.fillText("Score: " + score, 8, 20); // Placerar texten längst upp till vänster
-    ctx.fillText("High Score: " + highScore, 8+ctx.measureText("Score: " + score).width+8, 20);
+    ctx.fillText("High Score: " + highScoreBreakout, 8+ctx.measureText("Score: " + score).width+8, 20);
     ctx.textAlign = "right";
     ctx.fillText("Press P to "+ pString, canvas.width-8, 20); 
 
@@ -198,10 +198,10 @@ function drawUI(){
         else if (score >= 30)
             endMessage = "You won!";
 
-        if (score > highScore)
+        if (score > highScoreBreakout)
         {
-            highScore = score;
-            localStorage.setItem("highScore", highScore);
+            highScoreBreakout = score;
+            localStorage.setItem("highScoreBreakout", highScoreBreakout);
         }
             
         if (rPressed)
@@ -216,8 +216,8 @@ function drawUI(){
 
 function resetGame(){
   score = 0;
-  highScore = 0; 
-  localStorage.setItem("highScore", highScore);
+  highScoreBreakout = 0; 
+  localStorage.setItem("highScoreBreakout", highScoreBreakout);
 
   if (pString == "pause")
     document.location.reload();

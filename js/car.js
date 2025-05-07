@@ -5,34 +5,24 @@ const ctx = canvas.getContext('2d');
 const carHeight = 75;
 const carWidth = 50;
 let carX = (canvas.width - carWidth) / 2;
-let carY = canvas.height - carHeight - 5;
+let carY = canvas.height - carHeight - 35;
 const carSpeed = 5;
 
 // Hinder
 const obstacleHeight = 50;
 const obstacleWidth = 50;
 let obstacleAmount = 3;
-let obstacleX = canvas.width/2;
-let obstacleY = -75;
-const obstacleSpeed = 3;
+let obstacleX = 0;
+let obstacleY = 0;
+let obstacleSpeed = 3.5;
 let obstacles = [];
 
-
-
-// Initiera hinder
-function initiateObstacles(){
-  for (let i = 0; i < obstacleAmount; i++) {
-    obstacles[i] = { x: 0, y: 0, status: 1, exited: false}; // status = 1 innebär att hindret finns
-    let obstacleX = Math.random()*canvas.width;
-    obstacles[i].x = obstacleX;
-    let obstacleY = Math.random()*-canvas.height;
-    obstacles[i].y = obstacleY;
-  }
-}
-initiateObstacles();
-
-
-
+const pointRadius = 10;
+let pointAmount = 1;
+let pointX = 0;
+let pointY = 0;
+let pointSpeed = 3.5;
+let points = [];
 
 // Tangenttryck
 let rightPressed = false;
@@ -43,9 +33,38 @@ let downPressed = false;
 let rPressed = false;
 
 // Gameloop
-let gamePaused = false;
+let gamePaused = true;
 let gameEnd = false;
 let pString = "play";
+let score = 0;
+let recentScore = 0;
+let highScoreCar = localStorage.getItem("highScoreCar") || 0;
+let level = 1;
+
+// Initiera hinder
+function initiateObstacles(){
+  for (let i = 0; i < obstacleAmount; i++) {
+    obstacles[i] = { x: 0, y: 0, status: 1, exited: false}; // status = 1 innebär att hindret finns. exited betyder att det har lämnat canvasen
+    let obstacleX = Math.random()*canvas.width;
+    obstacles[i].x = obstacleX;
+    let obstacleY = (Math.random()*(-canvas.height*2))-obstacleHeight;
+    obstacles[i].y = obstacleY;
+  }
+}
+initiateObstacles();
+
+function initiatePoints(){
+  for (let i = 0; i < pointAmount; i++) {
+    points[i] = { x: 0, y: 0, status: 1, exited: false}; // status = 1 innebär att poängen finns. exited betyder att det har lämnat canvasen
+    let pointX = Math.random()*canvas.width;
+    points[i].x = pointX;
+    let pointY = (Math.random()*(-canvas.height*2))-pointRadius;
+    points[i].y = pointY;
+  }
+}
+initiatePoints();
+
+
 
 
 // Hitta CSS-färger
@@ -117,8 +136,6 @@ function drawCar() {
   ctx.closePath();
 }
 
-
-
 // Rita hinder
 function drawObstacles() {
    for (let i = 0; i < obstacleAmount; i++) {
@@ -132,57 +149,208 @@ function drawObstacles() {
   }
 }
 
-// Kolla kollision med brickor
-// function collisionDetection() {
-//   for (let c = 0; c < brickColumnCount; c++) {
-//     for (let r = 0; r < brickRowCount; r++) {
-//       const brick = bricks[c][r];
-//       if (brick.status === 1) {
-//         if (
-//           x > brick.x &&
-//           x < brick.x + brickWidth &&
-//           y > brick.y &&
-//           y < brick.y + brickHeight
-//         ) {
-//           dy = -dy; // Byt riktning
-//           brick.status = 0; // Ta bort brickan
-//           score++;
-//           if (score >= 30)
-//           {
-//             gameEnd = true;
-//             gamePaused = true;
-//           }
-            
-//         }
-//       }
-//     }
-//   }
-// }
+// Rita poäng
+function drawPoints() {
+  for (let i = 0; i < pointAmount; i++) {
+   if (points[i].status === 1) {
+     ctx.beginPath();
+     ctx.arc(points[i].x, points[i].y, pointRadius, 0, Math.PI * 2);
+     ctx.fillStyle = secondaryColor;
+     ctx.fill();
+     ctx.closePath();
+   }
+ }
+}
+
+
+// Kollision
+function collisionDetection() {
+for (let i = 0; i < obstacleAmount; i++) {
+    const obstacle = obstacles[i];
+
+    if (obstacle.status === 1) {
+      if (
+        carX < obstacle.x + obstacleWidth &&
+        carX+carWidth > obstacle.x &&
+        carY+carHeight > obstacle.y &&
+        carY < obstacle.y + obstacleHeight
+      ) {
+          gameEnd = true;
+          gamePaused = true;
+      }
+    }
+  }
+
+  for (let i = 0; i < pointAmount; i++) {
+    const point = points[i];
+
+    if (point.status === 1) {
+      if (
+        carX < point.x + pointRadius*2 &&
+        carX+carWidth > point.x &&
+        carY+carHeight > point.y &&
+        carY < point.y + pointRadius*2
+      ) {
+          point.status = 0; // Ta bort poängen
+          score += 10;
+      }
+    }
+  }
+}
+
+function levelControl()
+{
+  if (score == recentScore+50)
+  {
+    level++;
+
+    obstacleSpeed += 0.5;
+    pointSpeed += 0.5;
+
+    recentScore = score;
+  }
+    
+}
+
+function drawMultilineText(text, x, y, lineHeight) {
+  const lines = text.split("\n"); // Dela upp texten vid '\n'
+  ctx.textAlign = "center";
+  ctx.font = "18px monospace";
+  ctx.fillStyle = secondaryColor;
+
+  lines.forEach((line, index) => {
+      ctx.fillText(line, x, y + (index * lineHeight));
+  });
+}
+
+// Rita UI
+function drawUI(){
+  canvas.style.backgroundColor = primaryColor;
+
+  // Black background with purple outline for the upper UI
+  ctx.beginPath();
+  ctx.rect(0, 0, canvas.width, 30);
+  ctx.strokeStyle = secondaryColor;
+  ctx.stroke();
+  ctx.fillStyle = primaryColor;
+  ctx.fill();
+  ctx.closePath();
+
+  // Black background with purple outline for lower UI
+  ctx.beginPath();
+  ctx.rect(0, canvas.height-30, canvas.width, 30);
+  ctx.strokeStyle = secondaryColor;
+  ctx.stroke();
+  ctx.fillStyle = primaryColor;
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.closePath();
+
+  ctx.font = "18px monospace";
+  ctx.fillStyle = secondaryColor;
+  ctx.textAlign = "left";
+  ctx.fillText("Score: " + score, 8, 20); // Placerar texten längst upp till vänster
+  ctx.fillText("High Score: " + highScoreCar, 8+ctx.measureText("Score: " + score).width+8, 20);
+  ctx.textAlign = "right";
+  ctx.fillText("Press P to "+ pString, canvas.width-8, 20); 
+  ctx.textAlign = "center";
+  ctx.fillText("Level: "+ level, canvas.width/2, canvas.height-10); 
+
+  let endMessage = "";
+
+  if (gameEnd)
+  {
+    
+    // // Black background for game over screen
+    ctx.beginPath();
+    ctx.rect((canvas.width/2)-100, (canvas.height/2)-100, 200, 200);
+    ctx.fillStyle = primaryColor;
+    ctx.fill();
+    ctx.closePath();
+
+      ctx.textAlign = "center";
+
+      if (score < 30)
+          endMessage = "Game over!";
+      else if (score >= 30)
+          endMessage = "You won!";
+
+      if (score > highScoreCar)
+      {
+          highScoreCar = score;
+          localStorage.setItem("highScoreCar", highScoreCar);
+          console.log("new highscore")
+      }
+          
+      if (rPressed)
+      {
+        document.location.reload();
+      }
+        
+      drawMultilineText(endMessage + "\n Score: "+ score + "\n Press R to play again", canvas.width/2, canvas.height/2, 25);
+  }
+}
+
+
+function resetGame(){
+score = 0;
+highScoreCar = 0; 
+localStorage.setItem("highScoreCar", highScoreCar);
+
+if (pString == "pause")
+  document.location.reload();
+}
+
 
 // Uppdatera canvas och hantera rörelse
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Rensa canvas
-    drawCar();
     
-    for (let i = 0; i < obstacleAmount; i++) {
-      obstacles[i].y += obstacleSpeed;
-
-      if (obstacles[i].y > canvas.height+obstacleHeight)
-      {
-        obstacles[i].exited = true;
+    
+    if ((!gamePaused) && (!gameEnd))
+    {
+      for (let i = 0; i < obstacleAmount; i++) {
+        obstacles[i].y += obstacleSpeed;
+  
+        if (obstacles[i].y > canvas.height+obstacleHeight)
+        {
+          obstacles[i].exited = true;
+        }
       }
+  
+      if (obstacles.every(obstacles => obstacles.exited))
+      {
+        obstacleAmount = 3 + Math.floor(level/2);
+        initiateObstacles();
+      }
+  
+      for (let i = 0; i < pointAmount; i++) {
+        points[i].y += pointSpeed;
+        if (points[i].y > canvas.height+pointRadius)
+          {
+            points[i].exited = true;
+          }
+      }
+  
+      if (points.every(points => points.exited))
+      {
+        initiatePoints();
+      }
+  
     }
+    
 
-    // for (let i = 0; i < obstacleAmount; i++) {
-    //   if (obstacles[]) 
-    // }
-      
-      initiateObstacles();
-
+    drawCar();
     drawObstacles();
+    drawPoints();
+    
+    drawUI();
+    collisionDetection();
+    levelControl();
 
   // Flytta bilen
-  if (!gamePaused)
+  if ((!gamePaused) && (!gameEnd))
     {
         if (rightPressed && carX < canvas.width - carWidth) {
           carX += carSpeed;
@@ -191,10 +359,10 @@ function update() {
             carX -= carSpeed;
         }
 
-        if (upPressed && carY > 0) {
+        if (upPressed && carY > 30) {
             carY -= carSpeed;
           }
-        if (downPressed && carY < canvas.height - carHeight) {
+        if (downPressed && carY < canvas.height - carHeight - 30) {
             carY += carSpeed;
         }
 
