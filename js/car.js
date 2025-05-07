@@ -8,6 +8,32 @@ let carX = (canvas.width - carWidth) / 2;
 let carY = canvas.height - carHeight - 5;
 const carSpeed = 5;
 
+// Hinder
+const obstacleHeight = 50;
+const obstacleWidth = 50;
+let obstacleAmount = 3;
+let obstacleX = canvas.width/2;
+let obstacleY = -75;
+const obstacleSpeed = 3;
+let obstacles = [];
+
+
+
+// Initiera hinder
+function initiateObstacles(){
+  for (let i = 0; i < obstacleAmount; i++) {
+    obstacles[i] = { x: 0, y: 0, status: 1, exited: false}; // status = 1 innebär att hindret finns
+    let obstacleX = Math.random()*canvas.width;
+    obstacles[i].x = obstacleX;
+    let obstacleY = Math.random()*-canvas.height;
+    obstacles[i].y = obstacleY;
+  }
+}
+initiateObstacles();
+
+
+
+
 // Tangenttryck
 let rightPressed = false;
 let leftPressed = false;
@@ -93,13 +119,68 @@ function drawCar() {
 
 
 
+// Rita hinder
+function drawObstacles() {
+   for (let i = 0; i < obstacleAmount; i++) {
+    if (obstacles[i].status === 1) {
+      ctx.beginPath();
+      ctx.rect(obstacles[i].x, obstacles[i].y, obstacleWidth, obstacleHeight);
+      ctx.fillStyle = secondaryColor;
+      ctx.fill();
+      ctx.closePath();
+    }
+  }
+}
+
+// Kolla kollision med brickor
+// function collisionDetection() {
+//   for (let c = 0; c < brickColumnCount; c++) {
+//     for (let r = 0; r < brickRowCount; r++) {
+//       const brick = bricks[c][r];
+//       if (brick.status === 1) {
+//         if (
+//           x > brick.x &&
+//           x < brick.x + brickWidth &&
+//           y > brick.y &&
+//           y < brick.y + brickHeight
+//         ) {
+//           dy = -dy; // Byt riktning
+//           brick.status = 0; // Ta bort brickan
+//           score++;
+//           if (score >= 30)
+//           {
+//             gameEnd = true;
+//             gamePaused = true;
+//           }
+            
+//         }
+//       }
+//     }
+//   }
+// }
+
 // Uppdatera canvas och hantera rörelse
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height); // Rensa canvas
     drawCar();
+    
+    for (let i = 0; i < obstacleAmount; i++) {
+      obstacles[i].y += obstacleSpeed;
 
+      if (obstacles[i].y > canvas.height+obstacleHeight)
+      {
+        obstacles[i].exited = true;
+      }
+    }
 
- 
+    // for (let i = 0; i < obstacleAmount; i++) {
+    //   if (obstacles[]) 
+    // }
+      
+      initiateObstacles();
+
+    drawObstacles();
+
   // Flytta bilen
   if (!gamePaused)
     {
@@ -116,8 +197,7 @@ function update() {
         if (downPressed && carY < canvas.height - carHeight) {
             carY += carSpeed;
         }
-        console.log(carX);
-        console.log(carY);
+
     }
 
     requestAnimationFrame(update);

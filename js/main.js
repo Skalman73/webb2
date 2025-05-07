@@ -20,7 +20,7 @@ window.addEventListener('load', ()=> {
 // });
 
 // // Click anywhere else to disable visibility
-// document.querySelector('html').addEventListener('click', () => {
+// document.querySelector('html').addEventListe ner('click', () => {
 //     console.log('clicked away')
 
 //     navLinks.classList.remove('active');
