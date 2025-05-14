@@ -2,7 +2,7 @@ const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Bilens position och storlek
-const carHeight = 75;
+const carHeight = 50;
 const carWidth = 50;
 let carX = (canvas.width - carWidth) / 2;
 let carY = canvas.height - carHeight - 35;
@@ -17,7 +17,7 @@ let obstacleY = 0;
 let obstacleSpeed = 3.5;
 let obstacles = [];
 
-const pointRadius = 10;
+const pointRadius = 25;
 let pointAmount = 1;
 let pointX = 0;
 let pointY = 0;
@@ -129,22 +129,26 @@ function keyUpHandler(event) {
 
 // Rita bilen
 function drawCar() {
-  ctx.beginPath();
-  ctx.rect(carX, carY, carWidth, carHeight);
-  ctx.fillStyle = secondaryColor;
-  ctx.fill();
-  ctx.closePath();
+  // ctx.beginPath();
+  // ctx.rect(carX, carY, carWidth, carHeight);
+  // ctx.fillStyle = secondaryColor;
+  // ctx.fill();
+  // ctx.closePath();
+  ctx.drawImage(document.getElementById("player"),carX,carY,carWidth,carHeight);
+  
 }
 
 // Rita hinder
 function drawObstacles() {
    for (let i = 0; i < obstacleAmount; i++) {
     if (obstacles[i].status === 1) {
-      ctx.beginPath();
-      ctx.rect(obstacles[i].x, obstacles[i].y, obstacleWidth, obstacleHeight);
-      ctx.fillStyle = secondaryColor;
-      ctx.fill();
-      ctx.closePath();
+      // ctx.beginPath();
+      // ctx.rect(obstacles[i].x, obstacles[i].y, obstacleWidth, obstacleHeight);
+      // ctx.fillStyle = secondaryColor;
+      // ctx.fill();
+      // ctx.closePath();
+
+      ctx.drawImage(document.getElementById("obstacle"),obstacles[i].x, obstacles[i].y, obstacleWidth, obstacleHeight);
     }
   }
 }
@@ -153,11 +157,13 @@ function drawObstacles() {
 function drawPoints() {
   for (let i = 0; i < pointAmount; i++) {
    if (points[i].status === 1) {
-     ctx.beginPath();
-     ctx.arc(points[i].x, points[i].y, pointRadius, 0, Math.PI * 2);
-     ctx.fillStyle = secondaryColor;
-     ctx.fill();
-     ctx.closePath();
+    //  ctx.beginPath();
+    //  ctx.arc(points[i].x, points[i].y, pointRadius, 0, Math.PI * 2);
+    //  ctx.fillStyle = secondaryColor;
+    //  ctx.fill();
+    //  ctx.closePath();
+
+    ctx.drawImage(document.getElementById("point"),points[i].x, points[i].y, pointRadius, pointRadius);
    }
  }
 }
@@ -170,10 +176,10 @@ for (let i = 0; i < obstacleAmount; i++) {
 
     if (obstacle.status === 1) {
       if (
-        carX < obstacle.x + obstacleWidth &&
+        carX < obstacle.x + (obstacleWidth-5) &&
         carX+carWidth > obstacle.x &&
         carY+carHeight > obstacle.y &&
-        carY < obstacle.y + obstacleHeight
+        carY < obstacle.y + (obstacleHeight-5)
       ) {
           gameEnd = true;
           gamePaused = true;
@@ -186,10 +192,10 @@ for (let i = 0; i < obstacleAmount; i++) {
 
     if (point.status === 1) {
       if (
-        carX < point.x + pointRadius*2 &&
+        carX < point.x + pointRadius &&
         carX+carWidth > point.x &&
         carY+carHeight > point.y &&
-        carY < point.y + pointRadius*2
+        carY < point.y + pointRadius
       ) {
           point.status = 0; // Ta bort poängen
           score += 10;
@@ -248,6 +254,7 @@ function drawUI(){
   ctx.closePath();
 
   ctx.font = "18px monospace";
+  
   ctx.fillStyle = secondaryColor;
   ctx.textAlign = "left";
   ctx.fillText("Score: " + score, 8, 20); // Placerar texten längst upp till vänster
@@ -262,7 +269,7 @@ function drawUI(){
   if (gameEnd)
   {
     
-    // // Black background for game over screen
+    // Black background for game over screen
     ctx.beginPath();
     ctx.rect((canvas.width/2)-100, (canvas.height/2)-100, 200, 200);
     ctx.fillStyle = primaryColor;
@@ -270,11 +277,7 @@ function drawUI(){
     ctx.closePath();
 
       ctx.textAlign = "center";
-
-      if (score < 30)
-          endMessage = "Game over!";
-      else if (score >= 30)
-          endMessage = "You won!";
+      endMessage = "Game over!";
 
       if (score > highScoreCar)
       {
@@ -294,12 +297,12 @@ function drawUI(){
 
 
 function resetGame(){
-score = 0;
-highScoreCar = 0; 
-localStorage.setItem("highScoreCar", highScoreCar);
+  score = 0;
+  highScoreCar = 0; 
+  localStorage.setItem("highScoreCar", highScoreCar);
 
-if (pString == "pause")
-  document.location.reload();
+  if (pString == "pause")
+    document.location.reload();
 }
 
 

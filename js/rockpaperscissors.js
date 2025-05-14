@@ -78,30 +78,31 @@ export default class Game {
         let computerString = "";
         let userString = "";
 
-        switch(computerChoice){
-            case "rock":
-            {
-                computerString = "eraser";
-                var img = document.getElementById("computer_img");
-                // img.src="../img/eraser.png";
-                break;
-            }
-            case "scissors":
-            {
-                computerString = "pencil";
-                var img = document.getElementById("computer_img");
-                // img.src="../img/pencil.png";
-                break;
-            }
-            case "paper":
-            {
-                computerString = "paper";
-                var img = document.getElementById("computer_img");
-                // img.src="../img/sketchbook.webp";
-                break;
-            }
+        // switch(computerChoice){
+        //     case "rock":
+        //     {
+        //         computerString = "eraser";
+        //         var img = document.getElementById("computer_img");
+        //         // img.src="../img/eraser.png";
+        //         break;
+        //     }
+        //     case "scissors":
+        //     {
+        //         computerString = "pencil";
+        //         var img = document.getElementById("computer_img");
+        //         // img.src="../img/pencil.png";
+        //         break;
+        //     }
+        //     case "paper":
+        //     {
+        //         computerString = "paper";
+                
+        //         var img = document.getElementById("computer_img");
+        //         // img.src="../img/sketchbook.webp";
+        //         break;
+        //     }
             
-        }
+        // }
 
         // switch(userChoice){
         //     case "rock":
@@ -120,10 +121,11 @@ export default class Game {
         //         break;
         //     }
         // }
-
+        var img = document.getElementById("computer_img");
+        
         let message = "The Computer chose " + computerChoice + " and you chose " + userChoice;
         if (result == "win")
-            message += ". You won!";
+            message += "\n. You won!";
 
         if (result == "lose")
             message += ". You lost!";
@@ -139,7 +141,6 @@ export default class Game {
         message += " Computer score: " + this.computerScore +  " Your score: ";
 
         this.currentMessage = message;
-        console.log("score:" + this.userScore);
     }
 }
 
